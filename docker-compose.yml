@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - go-api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  go-api:
+    build: ./backend/go-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rust-sandbox
+      - mongo
+    volumes:
+      - ./backend/go-api:/app
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/rust_sandbox
+
+  rust-sandbox:
+    build: ./backend/rust-sandbox
+    volumes:
+      - ./backend/rust-sandbox:/app
+    security_opt:
+      - no-new-privileges:true # Security hardening
+    ulimits:
+      nproc: 50  # Limit processes
+      nofile:
+        soft: 1024
+        hard: 2048
+    environment:
+      - RUST_BACKTRACE=1
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
