@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 
-const defaultCode = `fn main() {
+const starterCode = `fn main() {
     println!("Hello, Rust!");
 }`;
 
 export default function Home() {
-    const [code, setCode] = useState(defaultCode);
+    const [code, setCode] = useState(starterCode);
     const [output, setOutput] = useState("");
 
     const runCode = async () => {
@@ -21,10 +21,10 @@ export default function Home() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Rust Code Editor</h1>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-orange-200 p-6">
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Rust Sandbox</h1>
 
-            <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-4 mb-6">
+            <div className="w-full max-w-4xl bg-gray-100 shadow-lg rounded-lg p-4 mb-6">
                 <Editor
                     height="400px"
                     defaultLanguage="rust"
@@ -37,7 +37,7 @@ export default function Home() {
             <div className="flex flex-col items-center w-full max-w-4xl">
                 <button
                     onClick={runCode}
-                    className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all mb-4"
+                    className="px-6 py-3 bg-gray-100 text-black font-semibold rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition-all mb-4"
                 >
                     Run Code
                 </button>
