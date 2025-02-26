@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
+import PlaygroundSwitcher from "@/app/playground_switcher";
 
 const starterCode = `fn main() {
     println!("Hello, Rust!");
@@ -34,7 +35,9 @@ export default function Home() {
                 />
             </div>
 
-            <div className="flex flex-col items-center w-full max-w-4xl">
+            <PlaygroundSwitcher code={code} setCode={setCode} />
+
+            <div className="flex flex-col items-center w-full max-w-4xl mt-4">
                 <button
                     onClick={runCode}
                     className="px-6 py-3 bg-gray-100 text-black font-semibold rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition-all mb-4"
