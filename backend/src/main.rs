@@ -28,18 +28,30 @@ fn compile_and_run(code: &str) -> String {
         .arg(output_executable)
         .output();
 
-    if compile_result.is_err() {
-        return "Failed to compile code".into();
+    match compile_result {
+        Ok(output) => {
+            if !output.status.success() {
+                let error_message = String::from_utf8_lossy(&output.stderr).to_string();
+                return error_message;
+            }
+        }
+        Err(_) => return "Failed to execute rustc compiler".into(),
     }
-
-    let output = Command::new(output_executable)
-        .output();
+    
+    let run_result = Command::new(output_executable).output();
 
     let _ = std::fs::remove_file(temp_file_path);
     let _ = std::fs::remove_file(output_executable);
 
-    match output {
-        Ok(result) => String::from_utf8_lossy(&result.stdout).to_string(),
+    match run_result {
+        Ok(result) => {
+            if result.status.success() {
+                String::from_utf8_lossy(&result.stdout).to_string()
+            } else {
+                let error_message = String::from_utf8_lossy(&result.stderr).to_string();
+                format!("Execution failed:\n{}", error_message)
+            }
+        }
         Err(_) => "Failed to execute compiled code".into(),
     }
 }
