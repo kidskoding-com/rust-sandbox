@@ -2,7 +2,7 @@
 use rocket::{serde::json::Json};
 use serde::{Deserialize, Serialize};
 use std::process::{Command};
-use rocket_cors::{AllowedOrigins, Cors, CorsOptions};
+use rocket_cors::{catch_all_options_routes, AllowedOrigins, Cors, CorsOptions};
 
 #[derive(Deserialize)]
 struct CodeInput {
@@ -35,7 +35,7 @@ fn compile_and_run(code: &str) -> String {
                 return error_message;
             }
         }
-        Err(_) => return "Failed to execute rustc compiler".into(),
+        Err(e) => return format!("Failed to execute rustc compiler: {}", e),
     }
     
     let run_result = Command::new(output_executable).output();
